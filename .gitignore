@@ -99,3 +99,6 @@ ENV/
 /output/
 
 .ipynb_checkpoints
+
+*data/
+.vscode
