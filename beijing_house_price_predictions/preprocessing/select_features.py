@@ -1,9 +1,9 @@
 import numpy as np
 import pandas as pd
-from sklearn.base import BaseEstimator, TransformerMixin
+from sklearn.base import BaseEstimator
 
 
-class SelectFeatures(BaseEstimator, TransformerMixin):
+class SelectFeatures(BaseEstimator):
     """ Select only the relevant features"""
 
     def __init__(self, variables_to_drop=None):
