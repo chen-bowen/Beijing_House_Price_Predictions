@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "beijing_house_price_predictions"
+version = "1.0"
+description = "Beijing House Price Predictions"
+authors = ["Bowen"]
+
+[tool.poetry.dependencies]
+python = "~3.7"
+numpy = "*"
+pandas = "*"
+matplotlib = "*"
+seaborn = "*"
+sklearn = "*"
+lightgbm = "*"
+
+[tool.poetry.dev-dependencies]
+black = "==19.3b0"
+pytest = "*"
+nb-black = "*"
