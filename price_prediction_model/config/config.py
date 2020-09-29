@@ -11,13 +11,14 @@ pd.options.display.max_columns = 50
 PACKAGE_ROOT = pathlib.Path(price_prediction_moddel.__file__).resolve().parent
 TRAINED_MODEL_DIR = PACKAGE_ROOT / "trained_model_files"
 DATASET_DIR = PACKAGE_ROOT / "data"
-
+TRAIN_DATA_PCT = 0.9
+VAL_DATA_PCT = 0.01
 
 # data
 TESTING_DATA_FILE = "test.csv"
 TRAINING_DATA_FILE = "train.csv"
 TARGET_ORIGINAL = "totalPrice"
-TARGET = "totalPrice_per_10000"
+TARGET = "totalPricePer10K"
 
 # features
 FEATURES = [
@@ -44,7 +45,7 @@ FEATURES = [
     "houseAgeYears",
     "tradeYear",
     "tradeMonth",
-    "3_month_avg_price",
+    "expAvgPrice3mon",
 ]
 
 # hyperparameters
@@ -80,17 +81,26 @@ CATEGORICAL_VARS = [
 ]
 
 # variables to convert to integer
-TO_INT_VARS = ["livingRoom", "drawingRoom", "bathRoom"]
+INT_VARS = ["livingRoom", "drawingRoom", "bathRoom"]
 
 # temporal feature
-TEMPORAL_VAR_TO_REPLACE = "constructionTime"
-TEMPORAL_SPECIAL_VALUES_HANDLING = {"2018": ["0", "未知"], "2017": "1"}
-TEMPORAL_TRANSFORMED_VAR = "houseAgeYears"
+TEMPORAL_VAR_TO_AGE = "constructionTime"
 
 # date features
 DATETIME_VAR = "tradeTime"
 DATETIME_VAR_YEAR = "tradeYear"
 DATETIME_VAR_MONTH = "tradeMonth"
+
+# special encoding variable
+RARE_CATEGORY_VAR = "buildingType"
+SPECIAL_VAR = "constructionTime"
+
+# impute features
+MEDIAN_IMPUTE_VAR = "DOM"
+CAT_MEAN_IMPUTE_VAR = "communityAverage"
+CAT_VAR = "Cid"
+DROP_ROWS_VAR = "fiveYearsProperty"
+FILL_0_VAR = "buildingType"
 
 # drop features
 DROP_FEATURES = [
@@ -106,8 +116,6 @@ DROP_FEATURES = [
 
 # variable contains non-unicode string
 NON_UNICODE_VAR = "floor"
-NON_UNICODE_TRANSFORMED_VARS = ["floorProximity", "buildingTotalFloors"]
-NON_UNICODE_MAPPING = {"顶": "5", "高": "4", "中": "3", "低": "2", "底": "1", "未知": "0"}
 
 NUMERICAL_NA_NOT_ALLOWED = [
     feature for feature in FEATURES if feature not in CATEGORICAL_VARS
@@ -118,3 +126,6 @@ PIPELINE_SAVE_FILE = f"{PIPELINE_NAME}_model_v"
 
 # used for differential testing
 ACCEPTABLE_MODEL_DIFFERENCE = 0.05
+
+# minimum years accepted
+MIN_YEARS_ACCEPTED = 2011

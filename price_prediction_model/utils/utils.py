@@ -12,17 +12,54 @@ import typing as t
 _logger = logging.getLogger(__name__)
 
 
+def train_test_validation_split(data, time_col, target_col):
+    """
+
+    Perform train test validation split based on time,
+    returns splitted data in form of X,y dataframes
+
+    """
+    # get split points
+    train_split_index = int(len(data) * config.TRAIN_DATA_PCT)
+    val_split_index = int(len(data) * (config.TRAIN_DATA_PCT + config.VAL_DATA_PCT))
+
+    # data splits
+    training_data = data.sort_values(by=time_col).iloc[:train_split_index]
+    validation_data = data.sort_values(by=time_col).iloc[
+        train_split_index:val_split_index
+    ]
+    test_data = data.sort_values(by=time_col).iloc[val_split_index:]
+
+    # split into X, y
+    X_train, y_train = (
+        trainiing_data.drop([target_col], axis=1),
+        trainiing_data[target_col],
+    )
+
+    X_val, y_val = (
+        validation_data.drop([target_col], axis=1),
+        validation_data[target_col],
+    )
+
+    X_test, y_test = (test_data.drop([target_col], axis=1), test_data[target_col])
+
+    return X_train, y_train, X_val, y_val, X_test, y_test
+
+
 def load_dataset(*, file_name: str) -> pd.DataFrame:
+    """ load the dataset """
     _data = pd.read_csv(f"{config.DATASET_DIR}/{file_name}")
     return _data
 
 
 def save_pipeline(*, pipeline_to_persist) -> None:
-    """Persist the pipeline.
+    """
+    Persist the pipeline.
     Saves the versioned model, and overwrites any previous
     saved models. This ensures that when the package is
     published, there is only one trained model that can be
     called, and we know exactly how it was built.
+
     """
 
     # Prepare versioned save file name
