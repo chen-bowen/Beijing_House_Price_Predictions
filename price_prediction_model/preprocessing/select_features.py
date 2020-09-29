@@ -1,12 +1,10 @@
-import numpy as np
-import pandas as pd
 from sklearn.base import BaseEstimator
 
 
 class SelectFeatures(BaseEstimator):
     """ Select only the relevant features"""
 
-    def __init__(self, variables_to_drop=None):
+    def __init__(self, variables_to_select=None):
         self.variables = variables_to_drop
 
     def fit(self, X, y=None):
@@ -14,6 +12,6 @@ class SelectFeatures(BaseEstimator):
 
     def transform(self, X):
         # encode labels
-        X.drop(self.variables, axis=1, inplace=True)
+        X = X[[self.variables]]
 
         return X

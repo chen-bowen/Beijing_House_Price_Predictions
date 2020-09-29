@@ -100,5 +100,5 @@ ENV/
 
 .ipynb_checkpoints
 
-*data/
+*.csv
 .vscode
