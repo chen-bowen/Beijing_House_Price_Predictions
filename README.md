@@ -1,4 +1,4 @@
-beijing_house_price_predictions
+price_prediction_moddel
 ==============================
 
 End to end lightGBM regression model to predict house prices in Beijing
@@ -19,7 +19,7 @@ Project Organization
     │
     ├── tests/              <- Unit tests.
     │
-    ├── beijing_house_price_predictions/      <- Python module with source code of this project.
+    ├── price_prediction_moddel/      <- Python module with source code of this project.
     │
     ├── environment.yml     <- conda virtual environment definition file.
     │
@@ -47,7 +47,7 @@ $ conda env create -f environment.yml
 $ conda activate example-project 
 ```
 
-Install `beijing_house_price_predictions` in the virtual environment:
+Install `price_prediction_moddel` in the virtual environment:
 
 ```bash
 $ pip install --editable .

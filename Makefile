@@ -4,8 +4,8 @@
 # GLOBALS                                                                       #
 #################################################################################
 
-PROJECT_NAME = beijing_house_price_predictions
-CONDA_ENVIRONMENT = beijing_house_price_predictions
+PROJECT_NAME = price_prediction_moddel
+CONDA_ENVIRONMENT = price_prediction_moddel
 PYTHON_VERSION = Python interpreter (e.g. 3, 3.5, 2.7)
 
 #################################################################################

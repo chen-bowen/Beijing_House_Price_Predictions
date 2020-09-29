@@ -7,13 +7,9 @@ def read(fname):
 
 
 setup(
-    name="beijing_house_price_predictions",
-
+    name="price_prediction_moddel",
     description="End to end lightGBM regression model to predict house prices in Beijing",
-
     author="Bowen",
-
-    packages=find_packages(exclude=['data', 'figures', 'output', 'notebooks']),
-
-    long_description=read('README.md'),
+    packages=find_packages(exclude=["data", "figures", "output", "notebooks"]),
+    long_description=read("README.md"),
 )

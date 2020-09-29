@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "beijing_house_price_predictions"
+name = "price_prediction_moddel"
 version = "1.0"
 description = "Beijing House Price Predictions"
 authors = ["Bowen"]
