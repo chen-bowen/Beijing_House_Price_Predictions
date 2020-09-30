@@ -1,18 +1,14 @@
 [tool.poetry]
-name = "price_prediction_model"
+name = "price_prediction_model_API"
 version = "1.0.0"
-description = "End to end lightGBM regression model to predict house prices in Beijing"
+description = "API that serves lightGBM regression model to predict house prices in Beijing"
 authors = ["Bowen"]
-readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.7"
-numpy = "*"
-pandas = "*"
-matplotlib = "*"
-seaborn = "*"
-sklearn = "*"
-lightgbm = "*"
+marshmallow = "2.17.0"
+flask = ">=1.1.1,<1.2.0"
+
 
 [tool.poetry.dev-dependencies]
 black = "==19.3b0"
