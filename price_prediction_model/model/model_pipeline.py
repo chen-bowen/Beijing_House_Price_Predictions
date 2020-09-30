@@ -61,10 +61,7 @@ class ModelPipeline:
                     "Missing Data Imputation, Categorical Mean",
                     CategoricalMeanImputer(
                         category_variable_pair=[
-                            (
-                                config.CAT_MEAN_IMPUTE_VAR,
-                                config.CAT_VAR,
-                            )
+                            (config.CAT_MEAN_IMPUTE_VAR, config.CAT_VAR)
                         ]
                     ),
                 ),
@@ -118,10 +115,7 @@ class ModelPipeline:
     def train(self, X_train, y_train):
         """ Train the model using the pipeline constructed """
 
-        self.model_pipeline.fit(
-            X_train,
-            y_train,
-        )
+        self.model_pipeline.fit(X_train, y_train)
 
     def predict(self, X):
         """ Predict with the pipeline created and return the predictions"""

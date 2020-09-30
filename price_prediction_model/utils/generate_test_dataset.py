@@ -24,7 +24,9 @@ def generate_test_dataset():
     # get test data and write to data directory
     test_data = data.iloc[split_index:]
     test_data.to_csv(
-        f"{config.DATASET_DIR}/beijing_house_price_test_data.csv", index=False
+        f"{config.DATASET_DIR}/beijing_house_price_test_data.csv",
+        index=False,
+        encoding=config.DATA_FILE_ENCODING,
     )
 
 
