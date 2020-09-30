@@ -1,22 +1,17 @@
 import pathlib
-
-import price_prediction_moddel
-
 import pandas as pd
-
+import price_prediction_model
 
 pd.options.display.max_rows = 100
 pd.options.display.max_columns = 50
 
-PACKAGE_ROOT = pathlib.Path(price_prediction_moddel.__file__).resolve().parent
+PACKAGE_ROOT = pathlib.Path(price_prediction_model.__file__).resolve().parent
 TRAINED_MODEL_DIR = PACKAGE_ROOT / "trained_model_files"
 DATASET_DIR = PACKAGE_ROOT / "data"
 TRAIN_DATA_PCT = 0.9
 VAL_DATA_PCT = 0.01
 
 # data
-TESTING_DATA_FILE = "test.csv"
-TRAINING_DATA_FILE = "train.csv"
 TARGET_ORIGINAL = "totalPrice"
 TARGET = "totalPricePer10K"
 
@@ -71,6 +66,10 @@ HYPER_PARAMS = {
     "subsample_freq": 0,
 }
 
+# lightgbm config
+EVAL_METRIC = "l2"
+EARLY_STOP_RND = 5000
+VERBOSE = 0
 
 # categorical variables to encode
 CATEGORICAL_VARS = [

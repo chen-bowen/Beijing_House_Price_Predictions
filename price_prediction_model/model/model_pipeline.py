@@ -1,7 +1,3 @@
-from sklearn.linear_model import Lasso
-from sklearn.pipeline import Pipeline
-import lightgbm as lgbm
-
 from price_prediction_model.preprocessing.data_type_conversion import (
     ToCategories,
     ToInt,
@@ -118,10 +114,17 @@ class ModelPipeline:
             ]
         )
 
-    def train(self, X_train, y_train):
+    def train(self, X_train, y_train, X_val, y_val):
         """ Train the model using the pipeline constructed """
 
-        self.model_pipeline.fit(X_train, y_train)
+        self.model_pipeline.fit(
+            X_train,
+            y_train,
+            eval_metric=config.EVAL_METRIC,
+            eval_set=[(X_val, y_val)],
+            early_stopping_rounds=config.EARLY_STOP_RND,
+            verbose=0,
+        )
 
     def predict(self, X):
         """ Predict with the pipeline created and return the predictions"""

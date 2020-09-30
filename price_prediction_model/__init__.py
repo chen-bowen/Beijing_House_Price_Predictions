@@ -1,8 +1,6 @@
 import logging
-
-from price_prediction_model.config import config
-from price_prediction_model.config import logging_config
-
+from price_prediction_model.config import config, logging_config
+from price_prediction_model import utils, preprocessing, features, model
 
 VERSION_PATH = config.PACKAGE_ROOT / "VERSION"
 

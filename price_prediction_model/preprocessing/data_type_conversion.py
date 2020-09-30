@@ -1,7 +1,6 @@
 import pandas as pd
 from sklearn.base import BaseEstimator
 
-from price_prediction_moddel.utils.errors import InvalidModelInputError
 import logging
 
 _logger = logging.getLogger(__name__)
