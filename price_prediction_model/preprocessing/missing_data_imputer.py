@@ -16,8 +16,9 @@ class VariableMedianImputer(BaseEstimator):
     def transform(self, X):
         # before log
         _logger.info(
-            f"""Before VariableMedianImputer Transformation: \n
-                data null counts: {X[[self.variables]]
+            f"""
+                Before VariableMedianImputer Transformation: \n
+                data null counts: {X[self.variables]
                                     .isnull()
                                     .sum()
                                     .to_dict()}\n
@@ -29,8 +30,9 @@ class VariableMedianImputer(BaseEstimator):
 
         # after log
         _logger.info(
-            f"""After VariableMedianImputer Transformation: \n
-                data null counts: {X[[self.variables]]
+            f"""
+                After VariableMedianImputer Transformation: \n
+                data null counts: {X[self.variables]
                                     .isnull()
                                     .sum()
                                     .to_dict()}\n
@@ -51,8 +53,9 @@ class ZeroImputer(BaseEstimator):
     def transform(self, X):
         # before log
         _logger.info(
-            f"""Before ZeroImputer Transformation: \n
-                data null counts: {X[[self.variables]]
+            f"""
+                Before ZeroImputer Transformation: \n
+                data null counts: {X[self.variables]
                                     .isnull()
                                     .sum()
                                     .to_dict()}\n
@@ -64,8 +67,9 @@ class ZeroImputer(BaseEstimator):
 
         # after log
         _logger.info(
-            f"""After ZeroImputer Transformation: \n
-                data null counts: {X[[self.variables]]
+            f"""
+                After ZeroImputer Transformation: \n
+                data null counts: {X[self.variables]
                                     .isnull()
                                     .sum()
                                     .to_dict()}\n
@@ -84,23 +88,30 @@ class CategoricalMeanImputer(BaseEstimator):
         return self
 
     def transform(self, X):
-        for category, var in self.category_variable_pair:
+
+        for var, category in self.category_variable_pair:
             # before log
             _logger.info(
-                f"""Before CategoricalMeanImputer Transformation: \n
-                    data null counts: {X[[self.var]]
+                f"""
+                    Before CategoricalMeanImputer Transformation: \n
+                    data null counts: {X[[var]]
                                         .isnull()
                                         .sum()
                                         .to_dict()}\n
             """
             )
 
-            X[var] = X.groupby(category).transform(lambda x: x.fillna(x.mean()))
+            X[var] = (
+                X.groupby(category)
+                .transform(lambda x: x.fillna(x.mean()))
+                .astype(float)
+            )
 
             # after log
             _logger.info(
-                f"""After CategoricalMeanImputer Transformation: \n
-                    data null counts: {X[[self.var]]
+                f"""
+                    After CategoricalMeanImputer Transformation: \n
+                    data null counts: {X[[var]]
                                         .isnull()
                                         .sum()
                                         .to_dict()}\n
@@ -114,7 +125,7 @@ class DropMissingDataRows(BaseEstimator):
     """ Drop rows if the variable value is missing in that row """
 
     def __init__(self, variables_to_impute=None):
-        self.category_variable_pair = category_variable_pair
+        self.variables = variables_to_impute
 
     def fit(self, X, y=None):
         return self
@@ -123,23 +134,24 @@ class DropMissingDataRows(BaseEstimator):
 
         # before log
         _logger.info(
-            f"""Before DropMissingDataRows Transformation: \n
+            f"""
+                Before DropMissingDataRows Transformation: \n
                 data rows: {X.shape[0]}\n
-                data null counts: {X[[self.variables]]
+                data null counts: {X[self.variables]
                                     .isnull()
                                     .sum()
                                     .to_dict()}\n
             """
         )
 
-        for var in self.variables:
-            X.dropna(subset=[var], inplace=True)
+        X.dropna(subset=self.variables, inplace=True)
 
         # after log
         _logger.info(
-            f"""After DropMissingDataRows Transformation: \n
+            f"""
+                After DropMissingDataRows Transformation: \n
                 data rows: {X.shape[0]}\n
-                data null counts: {X[[self.variables]]
+                data null counts: {X[self.variables]
                                     .isnull()
                                     .sum()
                                     .to_dict()}\n

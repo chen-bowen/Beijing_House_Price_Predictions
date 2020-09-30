@@ -1,3 +1,6 @@
+from sklearn.pipeline import Pipeline
+import lightgbm as lgbm
+
 from price_prediction_model.preprocessing.data_type_conversion import (
     ToCategories,
     ToInt,
@@ -7,10 +10,8 @@ from price_prediction_model.preprocessing.missing_data_imputer import (
     VariableMedianImputer,
     ZeroImputer,
     CategoricalMeanImputer,
-    DropMissingDataRows,
 )
 
-from price_prediction_model.preprocessing.select_rows import SelectRows
 from price_prediction_model.preprocessing.special_value_encoding import (
     EncodeSpecialValueEncoder,
     RareCategoryEncoder,
@@ -43,38 +44,33 @@ class ModelPipeline:
         self.model_pipeline = Pipeline(
             [
                 (
-                    "Select Rows",
-                    SelectRows(
-                        variables_to_filter_on=config.DATETIME_VAR_YEAR,
-                        bound=config.MIN_YEARS_ACCEPTED,
-                    ),
-                ),
-                ("Data Type Conversion, To Int", ToInt(variables=config.INT_VARS)),
-                (
                     "Rare Category Encoding",
-                    RareCategoryEncoder(variables_to_encode=config.RARE_CATEGORY_VAR),
+                    RareCategoryEncoder(variable_to_encode=config.RARE_CATEGORY_VAR),
                 ),
                 (
                     "Special Value Encoding",
-                    EncodeSpecialValueEncoder(variables_to_encode=config.SPECIAL_VAR),
+                    EncodeSpecialValueEncoder(variable_to_encode=config.SPECIAL_VAR),
                 ),
                 (
                     "Missing Data Imputation, Column Median",
-                    VariableMedianImputer(variables_to_impute=config.MEDIAN_IMPUTE_VAR),
+                    VariableMedianImputer(
+                        variables_to_impute=[config.MEDIAN_IMPUTE_VAR]
+                    ),
                 ),
                 (
                     "Missing Data Imputation, Categorical Mean",
                     CategoricalMeanImputer(
-                        variables_to_impute=(config.CAT_MEAN_IMPUTE_VAR, config.CAT_VAR)
+                        category_variable_pair=[
+                            (
+                                config.CAT_MEAN_IMPUTE_VAR,
+                                config.CAT_VAR,
+                            )
+                        ]
                     ),
                 ),
                 (
                     "Missing Data Imputation, Fill 0",
-                    ZeroImputer(variables_to_impute=config.FILL_0_VAR),
-                ),
-                (
-                    "Missing Data Imputation, Drop Rows",
-                    DropMissingDataRows(variables_to_impute=config.DROP_ROWS_VAR),
+                    ZeroImputer(variables_to_impute=[config.FILL_0_VAR]),
                 ),
                 (
                     "Trade Year Month from Date",
@@ -82,7 +78,7 @@ class ModelPipeline:
                 ),
                 (
                     "House Age Month from Date",
-                    HouseAgeYears(date=config.TEMPORAL_VAR_TO_AGE),
+                    HouseAgeYears(datetime=config.TEMPORAL_VAR_TO_AGE),
                 ),
                 (
                     "Create Floors Feature",
@@ -93,7 +89,8 @@ class ModelPipeline:
                     ExponentialWeightedAvgPrice(
                         target_sale_year=config.DATETIME_VAR_YEAR,
                         target_sale_month=config.DATETIME_VAR_MONTH,
-                        prices=config.TARGET,
+                        prices=config.PRICES_PER_AREA,
+                        areas=config.AREA,
                     ),
                 ),
                 (
@@ -104,13 +101,17 @@ class ModelPipeline:
                 ),
                 (
                     "Data Type Conversion, To Categories",
-                    ToCategories(variables=config.CATEGORICAL_VARS),
+                    ToCategories(variables_to_convert=config.CATEGORICAL_VARS),
+                ),
+                (
+                    "Data Type Conversion, To Int",
+                    ToInt(variables_to_convert=config.INT_VARS),
                 ),
                 (
                     "Select Final Features Set",
                     SelectFeatures(variables_to_select=config.FEATURES),
                 ),
-                ("LightGBM Model", lgbm.LGBMRegressor(**hyper_params)),
+                ("LightGBM", lgbm.LGBMRegressor(**config.HYPER_PARAMS)),
             ]
         )
 
@@ -120,10 +121,6 @@ class ModelPipeline:
         self.model_pipeline.fit(
             X_train,
             y_train,
-            eval_metric=config.EVAL_METRIC,
-            eval_set=[(X_val, y_val)],
-            early_stopping_rounds=config.EARLY_STOP_RND,
-            verbose=0,
         )
 
     def predict(self, X):

@@ -18,8 +18,8 @@ class SelectRows(BaseEstimator):
         # before log
         _logger.info(
             f"""
-                Before SelectRows Transformation: \n
-                Shape: {X.shape}\n 
+                Before SelectRows Transformation:
+                Shape: {X.shape}\n
             """
         )
 

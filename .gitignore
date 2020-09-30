@@ -102,3 +102,7 @@ ENV/
 
 *.csv
 .vscode
+
+.DS_STORE
+
+*.pkl

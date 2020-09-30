@@ -7,8 +7,8 @@ _logger = logging.getLogger(__name__)
 class EncodeSpecialValueEncoder(BaseEstimator):
     """ encode outlier values to sensible range """
 
-    def __init__(self, variables_to_encode=None):
-        self.variable = variables_to_encode
+    def __init__(self, variable_to_encode=None):
+        self.variable = variable_to_encode
 
     def fit(self, X, y=None):
         return self
@@ -47,8 +47,8 @@ class EncodeSpecialValueEncoder(BaseEstimator):
 class RareCategoryEncoder(BaseEstimator):
     """ Encode rare labels"""
 
-    def __init__(self, variables_to_encode=None):
-        self.variable = variables_to_encode
+    def __init__(self, variable_to_encode=None):
+        self.variable = variable_to_encode
 
     def fit(self, X, y=None):
         return self

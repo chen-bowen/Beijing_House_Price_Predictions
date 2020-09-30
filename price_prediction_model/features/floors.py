@@ -30,6 +30,8 @@ class FloorFeaturesCreation(BaseEstimator):
             """
         )
 
+        X.is_copy = None
+
         # take the first part of floor and transform is into categories as floorProximity
         X["floorProximity"] = (
             X[self.variable].str.split(" ").str[0].map(self.height_char_mapping)

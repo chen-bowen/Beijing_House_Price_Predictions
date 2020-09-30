@@ -18,18 +18,20 @@ class ToInt(BaseEstimator):
     def transform(self, X):
         # before log
         _logger.info(
-            f"""Before ToInt Transformation: \n
-                data types: {X[[self.variables]].dtypes.to_dict()}\n
+            f"""
+                Before ToInt Transformation: \n
+                data types: {X[self.variables].dtypes.to_dict()}\n
             """
         )
 
         # transformation
-        X[[self.variables]] = X[[self.variables]].astype(int)
+        X[self.variables] = X[self.variables].astype(int)
 
         # after log
         _logger.info(
-            f"""After ToInt Transformation: \n
-                data types: {X[[self.variables]].dtypes.to_dict()}\n
+            f"""
+                After ToInt Transformation: \n
+                data types: {X[self.variables].dtypes.to_dict()}\n
             """
         )
 
@@ -48,8 +50,9 @@ class ToCategories(BaseEstimator):
     def transform(self, X):
         # before log
         _logger.info(
-            f"""Before ToCategories Transformation: \n
-                data types: {X[[self.variables]].dtypes.to_dict()}\n
+            f"""
+                Before ToCategories Transformation: \n
+                data types: {X[self.variables].dtypes.to_dict()}\n
             """
         )
 
@@ -59,8 +62,9 @@ class ToCategories(BaseEstimator):
 
         # after log
         _logger.info(
-            f"""After ToCategories Transformation: \n
-                data types: {X[[self.variables]].dtypes.to_dict()}\n
+            f"""
+                After ToCategories Transformation: \n
+                data types: {X[self.variables].dtypes.to_dict()}\n
             """
         )
 

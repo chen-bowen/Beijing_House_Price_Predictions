@@ -8,7 +8,7 @@ class SelectFeatures(BaseEstimator):
     """ Select only the relevant features"""
 
     def __init__(self, variables_to_select=None):
-        self.variables = variables_to_drop
+        self.variables = variables_to_select
 
     def fit(self, X, y=None):
         return self
@@ -16,18 +16,20 @@ class SelectFeatures(BaseEstimator):
     def transform(self, X):
         # before log
         _logger.info(
-            f"""Before Select Features Transformation: \n
+            f"""
+                Before Select Features Transformation: \n
                 Shape: {X.shape}\n 
                 Columns: {list(X.columns)}
             """
         )
 
         # transformation
-        X = X[[self.variables]]
+        X = X[self.variables]
 
         # after log
         _logger.info(
-            f"""After Select Features Transformation: \n
+            f"""
+                After Select Features Transformation: \n
                 Shape: {X.shape}\n 
                 Columns: {list(X.columns)}
             """

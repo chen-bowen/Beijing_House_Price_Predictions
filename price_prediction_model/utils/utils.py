@@ -24,16 +24,19 @@ def train_test_validation_split(data, time_col, target_col):
     val_split_index = int(len(data) * (config.TRAIN_DATA_PCT + config.VAL_DATA_PCT))
 
     # data splits
-    training_data = data.sort_values(by=time_col).iloc[:train_split_index]
-    validation_data = data.sort_values(by=time_col).iloc[
-        train_split_index:val_split_index
-    ]
-    test_data = data.sort_values(by=time_col).iloc[val_split_index:]
+    data = data.sample(frac=1, random_state=config.RANDOM_SEED).reset_index(drop=True)
+    data["year"] = pd.to_datetime(data[time_col]).dt.year
+    data.sort_values(by="year", inplace=True)
+    data.drop("year", axis=1, inplace=True)
+
+    training_data = data.iloc[:train_split_index]
+    validation_data = data.iloc[train_split_index:val_split_index]
+    test_data = data.iloc[val_split_index:]
 
     # split into X, y
     X_train, y_train = (
-        trainiing_data.drop([target_col], axis=1),
-        trainiing_data[target_col],
+        training_data.drop([target_col], axis=1),
+        training_data[target_col],
     )
 
     X_val, y_val = (
@@ -48,7 +51,11 @@ def train_test_validation_split(data, time_col, target_col):
 
 def load_dataset(*, file_name: str) -> pd.DataFrame:
     """ load the dataset """
-    _data = pd.read_csv(f"{config.DATASET_DIR}/{file_name}")
+    _data = pd.read_csv(
+        f"{config.DATASET_DIR}/{file_name}",
+        encoding=config.DATA_FILE_ENCODING,
+        low_memory=False,
+    )
     return _data
 
 

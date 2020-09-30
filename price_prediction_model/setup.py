@@ -7,7 +7,7 @@
 
 
 # setup(
-#     name="price_prediction_moddel",
+#     name="price_prediction_model",
 #     description="End to end lightGBM regression model to predict house prices in Beijing",
 #     author="Bowen",
 #     packages=find_packages(exclude=["data", "figures", "output", "notebooks"]),

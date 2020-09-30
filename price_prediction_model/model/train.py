@@ -20,18 +20,26 @@ def train_model() -> None:
     """Train the model."""
 
     # read training data
-    house_dataset = load_dataset(file_name=config.DATA_DIR)
+    house_dataset = load_dataset(file_name=config.DATA_FILE_NAME)
+
+    # sklearn pipelines doesn't support row operations, we have to alter it here
+    house_dataset = house_dataset[
+        house_dataset["tradeTime"] >= str(config.MIN_YEARS_ACCEPTED)
+    ]
+    house_dataset = house_dataset.dropna(subset=["fiveYearsProperty"])
 
     # divide train, validation and test
     X_train, y_train, X_val, y_val, X_test, y_test = train_test_validation_split(
-        data=house_dataset, time_col=config.DATETIME_VAR_YEAR, target_col=config.TARGET
+        data=house_dataset,
+        time_col=config.DATETIME_VAR,
+        target_col=config.TARGET_ORIGINAL,
     )
     # initialize and train the model
     model = ModelPipeline()
-    model.train(X_train.values, y_train.values, X_val.values, y_val.values)
+    model.train(X_train, y_train, X_val, y_val)
 
     _logger.info(f"saving model version: {_version}")
-    save_pipeline(pipeline_to_persist=pipeline.price_pipe)
+    save_pipeline(pipeline_to_persist=model.model_pipeline)
 
 
 if __name__ == "__main__":
