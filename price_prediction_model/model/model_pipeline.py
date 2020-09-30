@@ -115,7 +115,7 @@ class ModelPipeline:
             ]
         )
 
-    def train(self, X_train, y_train, X_val, y_val):
+    def train(self, X_train, y_train):
         """ Train the model using the pipeline constructed """
 
         self.model_pipeline.fit(

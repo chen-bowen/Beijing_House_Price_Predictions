@@ -29,14 +29,14 @@ def train_model() -> None:
     house_dataset = house_dataset.dropna(subset=["fiveYearsProperty"])
 
     # divide train, validation and test
-    X_train, y_train, X_val, y_val, X_test, y_test = train_test_validation_split(
+    X_train, y_train, X_val, y_val = train_test_validation_split(
         data=house_dataset,
         time_col=config.DATETIME_VAR,
         target_col=config.TARGET_ORIGINAL,
     )
     # initialize and train the model
     model = ModelPipeline()
-    model.train(X_train, y_train, X_val, y_val)
+    model.train(X_train, y_train)
 
     _logger.info(f"saving model version: {_version}")
     save_pipeline(pipeline_to_persist=model.model_pipeline)

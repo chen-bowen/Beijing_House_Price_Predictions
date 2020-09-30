@@ -44,9 +44,7 @@ def train_test_validation_split(data, time_col, target_col):
         validation_data[target_col],
     )
 
-    X_test, y_test = (test_data.drop([target_col], axis=1), test_data[target_col])
-
-    return X_train, y_train, X_val, y_val, X_test, y_test
+    return X_train, y_train, X_val, y_val
 
 
 def load_dataset(*, file_name: str) -> pd.DataFrame:

@@ -123,9 +123,7 @@ DROP_FEATURES = [
 # variable contains non-unicode string
 NON_UNICODE_VAR = "floor"
 
-NUMERICAL_NA_NOT_ALLOWED = [
-    feature for feature in FEATURES if feature not in CATEGORICAL_VARS
-]
+NUMERICAL_MIX_TYPE_NOT_ALLOWED = [feature for feature in INT_VARS]
 
 PIPELINE_NAME = "lightgbm_regression"
 PIPELINE_SAVE_FILE = f"{PIPELINE_NAME}_model_v"
