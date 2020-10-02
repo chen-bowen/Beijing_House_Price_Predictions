@@ -25,11 +25,11 @@ poetry-install:
 
 # train model
 train:
-	PYTHONPATH=. python model/train.py
+	PYTHONPATH=.. python ../price_prediction_model/model/train.py
 
 ## test price prediction model
 test-model:
-	PYTHONPATH=. python utils/generate_test_dataset.py	
+	PYTHONPATH=.. python ../price_prediction_model/utils/generate_test_dataset.py	
 	PYTHONPATH=. python -m pytest -v tests 
 
 #################################################################################
