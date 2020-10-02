@@ -4,29 +4,13 @@
 # GLOBALS                                                                       #
 #################################################################################
 
-PROJECT_NAME = house_price_prediction_model
-CONDA_ENVIRONMENT = house_price_predictions
+PROJECT_NAME = price_prediction_model_api
+CONDA_ENVIRONMENT = price_prediction_model_api
 PYTHON_VERSION = Python interpreter (e.g. 3, 3.5, 2.7)
 
 #################################################################################
 # COMMANDS                                                                      #
 #################################################################################
-
-## Set up python interpreter environment
-environment:
-	conda env create -f environment.yml
-
-git:
-	git init
-
-create-venv:
-	python3 -m venv venv
-	source venv/bin/activate	
-
-fetch-dataset:
-	source venv/bin/activate
-	chmod +x ./scripts/fetch_kaggle_dataset.sh
-	./scripts/fetch_kaggle_dataset.sh	
 
 ## Install Poetry dependencies
 poetry-install:
@@ -35,6 +19,9 @@ poetry-install:
 		|  pip install -r /dev/stdin \
 		&& poetry debug
 
+## test model api
+test-api:
+	PYTHONPATH=. pytest -v tests 
 
 #################################################################################
 # Self Documenting Commands                                                     #

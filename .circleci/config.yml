@@ -1,61 +1,65 @@
 version: 2
 
+orbs:
+  python: circleci/python@0.2.1
+
 defaults: &defaults
   docker:
-    - image: circleci/python:3.7.2
+    - image: circleci/python:3.7.6
   working_directory: ~/project
 
 prepare_venv: &prepare_venv
   run:
     name: Create venv
-    command: |
-      python3 -m venv venv
-      source venv/bin/activate
-      pip install --upgrade pip
+    command: make create-venv
 
-poetry_setup: &poetry_setup
+update_apt_packages: &update_apt_packages
   run:
-    name: Install poetry
-    command: |
-      sudo pip install --upgrade pip
-      pip install poetry
+    name: Update apt packages
+    command: make create-venv
 
-fetch_data: &fetch_data
+update_install_pip: &update_install_pip
+  run:
+    name: Update apt packages
+    command: pip install --upgrade pip
+
+install_poetry: &install_poetry
+  run:
+    name: Update apt packages
+    command: pip install poetry
+
+poetry_packages_install: &poetry_packages_install
+  run:
+    name: Install poetry packages
+    command: make poetry-install
+
+fetch_dataset: &fetch_dataset
   run:
     name: Set script permissions and fetch data
-    command: |
-      source venv/bin/activate
-      chmod +x ./scripts/fetch_kaggle_dataset.sh
-      ./scripts/fetch_kaggle_dataset.sh
+    command: make fetch-dataset
 
 jobs:
-  test_regression_model_py37:
+  test_model_py37:
     docker:
       - image: circleci/python:3.7.6
-    working_directory: ~/project/packages/regression_model
+    working_directory: ~/project/price_prediction_model
     steps:
       - checkout:
           path: ~/project
       - run:
           name: Run tests with Python 3.7
-          command: |
-            sudo pip install --upgrade pip
-            pip install --user tox
-            tox -e py37
+          command: make test-model
 
   test_ml_api_py37:
     docker:
       - image: circleci/python:3.7.6
-    working_directory: ~/project/packages/ml_api
+    working_directory: ~/project/model_api
     steps:
       - checkout:
           path: ~/project
       - run:
           name: Run API tests with Python 3.7
-          command: |
-            sudo pip install --upgrade pip
-            pip install --user tox
-            tox -e py37
+          command: make test-api
 
 #   train_and_upload_regression_model:
 #     <<: *defaults
@@ -171,29 +175,26 @@ jobs:
 #             chmod +x ./scripts/publish_model.sh
 #             ./scripts/publish_model.sh ./packages/neural_network_model/
 
-# workflows:
-#   version: 2
-#   test-all:
-#     jobs:
-#       - test_regression_model_py36
-#       - test_regression_model_py37
-#       - test_regression_model_py38
-#       - test_ml_api_py36
-#       - test_ml_api_py37
-#       # - test_ml_api_py38 pending NN model update
-#       - section_9_differential_tests
-#       - train_and_upload_regression_model:
-#           requires:
-#             - test_regression_model_py36
-#             - test_regression_model_py37
-#             - test_regression_model_py38
-#             - test_ml_api_py36
-#             - test_ml_api_py37
-#             - section_9_differential_tests
-#           filters:
-#             branches:
-#               only:
-#                 - master
+workflows:
+  version: 2
+  test-all:
+    jobs:
+      - test_model_py37
+      - test_ml_api_py37
+      # - test_ml_api_py38 pending NN model update
+      # - section_9_differential_tests
+      # - train_and_upload_regression_model:
+      #     requires:
+      #       - test_regression_model_py36
+      #       - test_regression_model_py37
+      #       - test_regression_model_py38
+      #       - test_ml_api_py36
+      #       - test_ml_api_py37
+      #       - section_9_differential_tests
+      #     filters:
+      #       branches:
+      #         only:
+      #           - master
 # - section_10_deploy_to_heroku:
 #     requires:
 #       - train_and_upload_regression_model
