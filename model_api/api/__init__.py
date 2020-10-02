@@ -1,4 +1,3 @@
-from api.config import PACKAGE_ROOT
+import poetry_version
 
-with open(PACKAGE_ROOT / 'VERSION') as version_file:
-    __version__ = version_file.read().strip()
+__version__ = poetry_version.extract(source_file=__file__)
