@@ -36,7 +36,7 @@ def make_prediction(*, input_data: t.Union[pd.DataFrame, dict]) -> dict:
     _logger.info(
         f"Making predictions with model version: {_version} "
         f"Inputs: {validated_data} "
-        f"Predictions: {results}"
+        f"Predictions: {response}"
     )
 
     return response

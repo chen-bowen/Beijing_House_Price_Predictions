@@ -9,6 +9,7 @@ PACKAGE_ROOT = pathlib.Path(price_prediction_model.__file__).resolve().parent
 TRAINED_MODEL_DIR = PACKAGE_ROOT / "trained_model_files"
 DATASET_DIR = PACKAGE_ROOT / "data"
 DATA_FILE_NAME = "beijing_house_prices_2012_2017.csv"
+TEST_DATA_FILE_NAME = "beijing_house_price_test_data.csv"
 DATA_FILE_ENCODING = "gbk"
 TRAIN_DATA_PCT = 0.9
 VAL_DATA_PCT = 0.01
@@ -17,6 +18,7 @@ RANDOM_SEED = 7
 # data
 TARGET_ORIGINAL = "totalPrice"
 TARGET = "totalPricePer10K"
+
 
 # total price replica
 PRICES_PER_AREA = "price"

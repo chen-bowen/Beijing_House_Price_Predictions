@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "price_prediction_model"
-version = "1.0.0"
+version = "1.0.1"
 description = "End to end lightGBM regression model to predict house prices in Beijing"
 authors = ["Bowen"]
 readme = "README.md"
@@ -13,6 +13,7 @@ matplotlib = "*"
 seaborn = "*"
 sklearn = "*"
 lightgbm = "*"
+poetry-version = "*"
 
 [tool.poetry.dev-dependencies]
 black = "==19.3b0"

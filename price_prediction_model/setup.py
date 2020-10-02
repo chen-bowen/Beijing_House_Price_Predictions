@@ -21,7 +21,7 @@ if os.path.exists(readme_path):
 setup(
     long_description=readme,
     name='price_prediction_model',
-    version='1.0.0',
+    version='1.0.1',
     description='End to end lightGBM regression model to predict house prices in Beijing',
     python_requires='==3.*,>=3.7.0',
     author='Bowen',
@@ -34,11 +34,12 @@ setup(
     package_data={
         "price_prediction_model": [
             "*.lock", "*.md", "*.rst", "*.toml", "data/*.csv",
-            "price_prediction_model.egg-info/*.txt", "trained_model_files/*.pkl"
+            "trained_model_files/*.pkl"
         ]
     },
     install_requires=[
-        'lightgbm', 'matplotlib', 'numpy', 'pandas', 'seaborn', 'sklearn'
+        'lightgbm', 'matplotlib', 'numpy', 'pandas', 'poetry-version',
+        'seaborn', 'sklearn'
     ],
     extras_require={"dev": ["black==19.3b0", "nb-black", "pytest"]},
 )
