@@ -18,9 +18,6 @@ jobs:
           name: Install poetry
           command: pip install poetry
       - run:
-          name: Lock poetry
-          command: poetry lock
-      - run:
           name: Install poetry packages
           command: make poetry-install
       - run:
