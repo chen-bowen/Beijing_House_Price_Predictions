@@ -10,7 +10,7 @@ jobs:
     working_directory: ~/project/price_prediction_model
     steps:
       - checkout:
-          path: ~/project/price_prediction_model
+          path: .
       - run:
           name: Install pip
           command: pip install --upgrade pip
@@ -24,7 +24,10 @@ jobs:
           name: Set script permissions and fetch data
           command: make fetch-dataset
       - run:
-          name: Run tests with Python 3.7
+          name: Train model
+          command: make train
+      - run:
+          name: Run model test
           command: make test-model
 
   test_ml_api_py37:

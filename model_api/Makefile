@@ -15,7 +15,7 @@ PYTHON_VERSION = Python interpreter (e.g. 3, 3.5, 2.7)
 ## Install Poetry dependencies
 poetry-install:
 	poetry config virtualenvs.create false \
-		&& poetry export --without-hashes -f requirements.txt --dev \
+		&& poetry export --without-hashes -f requirements.txt \
 		|  pip install -r /dev/stdin \
 		&& poetry debug
 
