@@ -7,9 +7,8 @@ jobs:
   test_model_py37:
     docker:
       - image: circleci/python:3.7.6
+    working_directory: ~/project/price_prediction_model
     steps:
-      - checkout:
-          path: ./price_prediction_model
       - run:
           name: Install pip
           command: pip install --upgrade pip
