@@ -18,6 +18,9 @@ jobs:
           name: Install poetry
           command: pip install poetry
       - run:
+          name: Lock poetry
+          command: poetry lock
+      - run:
           name: Install poetry packages
           command: make poetry-install
       - run:
@@ -156,7 +159,6 @@ workflows:
   version: 2
   test-all:
     jobs:
-      - build_env_and_data
       - test_model_py37
       - test_ml_api_py37
       # - test_ml_api_py38 pending NN model update
