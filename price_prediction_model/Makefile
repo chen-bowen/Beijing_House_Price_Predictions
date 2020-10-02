@@ -23,8 +23,13 @@ poetry-install:
 		|  pip install -r /dev/stdin \
 		&& poetry debug
 
+# train model
+train:
+	PYTHONPATH=. python model/train.py
+
 ## test price prediction model
 test-model:
+	PYTHONPATH=. python utils/generate_test_dataset.py	
 	PYTHONPATH=. python -m pytest -v tests 
 
 #################################################################################

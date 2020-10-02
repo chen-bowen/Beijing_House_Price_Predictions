@@ -43,4 +43,4 @@ def train_model() -> None:
 
 
 if __name__ == "__main__":
-    run_training()
+    train_model()
