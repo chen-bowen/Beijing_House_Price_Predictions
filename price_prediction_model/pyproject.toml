@@ -3,7 +3,7 @@ name = "price_prediction_model"
 version = "1.0.1"
 description = "End to end lightGBM regression model to predict house prices in Beijing"
 authors = ["Bowen"]
-readme = "README.md"
+readme = ""
 
 [tool.poetry.dependencies]
 python = "^3.7"

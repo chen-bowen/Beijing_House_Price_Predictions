@@ -13,7 +13,7 @@ import os.path
 
 readme = ''
 here = os.path.abspath(os.path.dirname(__file__))
-readme_path = os.path.join(here, 'README.rst')
+readme_path = os.path.join(here, '')
 if os.path.exists(readme_path):
     with open(readme_path, 'rb') as stream:
         readme = stream.read().decode('utf8')
@@ -33,7 +33,7 @@ setup(
     package_dir={"price_prediction_model": ""},
     package_data={
         "price_prediction_model": [
-            "*.lock", "*.md", "*.rst", "*.toml", "data/*.csv",
+            "*.lock", "*.md", "*.toml", "data/*.csv",
             "trained_model_files/*.pkl"
         ]
     },
