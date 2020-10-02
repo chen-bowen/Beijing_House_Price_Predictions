@@ -21,7 +21,7 @@ poetry-install:
 
 ## test price prediction model
 test-model:
-	PYTHONPATH=. pytest -v tests 
+	PYTHONPATH=. python -m pytest -v tests 
 
 #################################################################################
 # Self Documenting Commands                                                     #
