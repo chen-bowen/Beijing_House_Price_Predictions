@@ -12,6 +12,10 @@ PYTHON_VERSION = Python interpreter (e.g. 3, 3.5, 2.7)
 # COMMANDS                                                                      #
 #################################################################################
 
+fetch-dataset:
+	chmod +x ../scripts/fetch_kaggle_dataset.sh
+	../scripts/fetch_kaggle_dataset.sh	
+
 ## Install Poetry dependencies
 poetry-install:
 	poetry config virtualenvs.create false \

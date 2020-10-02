@@ -4,20 +4,6 @@ orbs:
   python: circleci/python@0.2.1
 
 jobs:
-  build_env_and_data:
-    docker:
-      - image: circleci/python:3.7.6
-    working_directory: ~/project
-    steps:
-      - checkout:
-          path: ~/project/
-      - run:
-          name: install make
-          command: sudo apt-get install make
-      - run:
-          name: Set script permissions and fetch data
-          command: make fetch-dataset
-
   test_model_py37:
     docker:
       - image: circleci/python:3.7.6
@@ -34,6 +20,9 @@ jobs:
       - run:
           name: Install poetry packages
           command: make poetry-install
+      - run:
+          name: Set script permissions and fetch data
+          command: make fetch-dataset
       - run:
           name: Run tests with Python 3.7
           command: make test-model
