@@ -24,7 +24,6 @@ create-venv:
 	source venv/bin/activate	
 
 fetch-dataset:
-	source venv/bin/activate
 	chmod +x ./scripts/fetch_kaggle_dataset.sh
 	./scripts/fetch_kaggle_dataset.sh	
 
