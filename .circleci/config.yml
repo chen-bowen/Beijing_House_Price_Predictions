@@ -42,6 +42,9 @@ jobs:
       - checkout:
           path: ~/project/
       - run:
+          name: install make
+          command: sudo apt-get install make
+      - run:
           name: Set script permissions and fetch data
           command: make fetch-dataset
 
