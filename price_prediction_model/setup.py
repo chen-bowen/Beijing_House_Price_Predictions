@@ -9,14 +9,7 @@ try:
 except ImportError:
     from distutils.core import setup
 
-import os.path
-
 readme = ''
-here = os.path.abspath(os.path.dirname(__file__))
-readme_path = os.path.join(here, '')
-if os.path.exists(readme_path):
-    with open(readme_path, 'rb') as stream:
-        readme = stream.read().decode('utf8')
 
 setup(
     long_description=readme,
@@ -33,13 +26,13 @@ setup(
     package_dir={"price_prediction_model": ""},
     package_data={
         "price_prediction_model": [
-            "*.lock", "*.md", "*.toml", "data/*.csv",
-            "trained_model_files/*.pkl"
+            "*.lock", "*.md", "*.toml", "data/*.csv", "scripts/*.json",
+            "scripts/*.sh", "trained_model_files/*.pkl"
         ]
     },
     install_requires=[
-        'lightgbm', 'matplotlib', 'numpy', 'pandas', 'poetry-version',
-        'seaborn', 'sklearn'
+        'kaggle<1.6.0,>=1.5.6', 'lightgbm', 'matplotlib', 'numpy', 'pandas',
+        'poetry-version', 'seaborn', 'sklearn'
     ],
     extras_require={"dev": ["black==19.3b0", "nb-black", "pytest"]},
 )
