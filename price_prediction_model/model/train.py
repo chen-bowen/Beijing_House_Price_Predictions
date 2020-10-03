@@ -11,6 +11,7 @@ from price_prediction_model.config import config
 from price_prediction_model import __version__ as _version
 
 import logging
+import os
 
 
 _logger = logging.getLogger(__name__)
@@ -34,6 +35,13 @@ def train_model() -> None:
         time_col=config.DATETIME_VAR,
         target_col=config.TARGET_ORIGINAL,
     )
+    save_file_name = f"{config.PIPELINE_SAVE_FILE}{_version}.pkl"
+    save_path = config.TRAINED_MODEL_DIR / save_file_name
+
+    if os.path.exists(save_path):
+        _logger.info(f"Found existing model version: {_version}")
+        return
+
     # initialize and train the model
     model = ModelPipeline()
     model.train(X_train, y_train)
