@@ -19,7 +19,7 @@ fetch-dataset:
 ## Install Poetry dependencies
 poetry-install:
 	poetry config virtualenvs.create false \
-		&& poetry export --without-hashes -f requirements.txt \
+		&& poetry export --without-hashes -f requirements.txt --dev\
 		|  pip install -r /dev/stdin \
 		&& poetry debug
 
@@ -29,6 +29,7 @@ train:
 
 ## test price prediction model
 test-model:
+	pip install pytest==6.1.1
 	PYTHONPATH=.. python ../price_prediction_model/utils/generate_test_dataset.py	
 	PYTHONPATH=. python -m pytest -v tests 
 
