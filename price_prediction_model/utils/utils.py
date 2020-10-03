@@ -71,6 +71,9 @@ def save_pipeline(*, pipeline_to_persist) -> None:
     save_file_name = f"{config.PIPELINE_SAVE_FILE}{_version}.pkl"
     save_path = config.TRAINED_MODEL_DIR / save_file_name
 
+    if not os.path.exists(config.TRAINED_MODEL_DIR):
+        os.makedirs(config.TRAINED_MODEL_DIR)
+
     remove_old_pipelines(files_to_keep=[save_file_name])
     joblib.dump(pipeline_to_persist, save_path)
     _logger.info(f"saved pipeline: {save_file_name}")
