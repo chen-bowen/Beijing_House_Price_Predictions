@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # download data from kaggle
-kaggle datasets download -d ruiqurm/lianjia -p price_prediction_model/data/
+kaggle datasets download -d ruiqurm/lianjia -p data/
 # unzip data archive
 unzip data/lianjia.zip -d data/
 # delete zip file
