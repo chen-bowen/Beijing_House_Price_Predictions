@@ -108,7 +108,7 @@ class ModelPipeline:
                     "Select Final Features Set",
                     SelectFeatures(variables_to_select=config.FEATURES),
                 ),
-                ("LightGBM", lgbm.LGBMRegressor(**config.HYPER_PARAMS)),
+                ("LightGBM", lgbm.LGBMRegressor()),
             ]
         )
 
