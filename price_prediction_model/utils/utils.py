@@ -7,7 +7,7 @@ from price_prediction_model import __version__ as _version
 
 import logging
 import typing as t
-
+import os
 
 _logger = logging.getLogger(__name__)
 
