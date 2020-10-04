@@ -105,6 +105,4 @@ ENV/
 
 .DS_STORE
 
-*.pkl
-
 .pytest_cache
