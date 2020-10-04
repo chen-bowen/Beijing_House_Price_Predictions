@@ -38,6 +38,15 @@ jobs:
       - checkout:
           path: ~/project
       - run:
+          name: Install pip
+          command: pip install --upgrade pip
+      - run:
+          name: Install poetry
+          command: pip install poetry
+      - run:
+          name: Install poetry packages
+          command: make poetry-install
+      - run:
           name: Run API tests with Python 3.7
           command: make test-api
 

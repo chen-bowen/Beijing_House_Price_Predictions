@@ -15,12 +15,13 @@ PYTHON_VERSION = Python interpreter (e.g. 3, 3.5, 2.7)
 ## Install Poetry dependencies
 poetry-install:
 	poetry config virtualenvs.create false \
-		&& poetry export --without-hashes -f requirements.txt \
+		&& poetry export --without-hashes -f requirements.txt --dev\
 		|  pip install -r /dev/stdin \
 		&& poetry debug
 
 ## test model api
 test-api:
+	pip install pytest
 	PYTHONPATH=. python -m pytest -v tests 
 
 #################################################################################
