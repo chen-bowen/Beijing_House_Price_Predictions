@@ -18,6 +18,7 @@ setup(
     description="End to end lightGBM regression model to predict house prices in Beijing",
     python_requires="==3.*,>=3.7.0",
     author="Bowen",
+    url="https://github.com/chen-bowen/Beijing_House_Price_Predictions",
     packages=[
         "price_prediction_model",
         "price_prediction_model.config",
