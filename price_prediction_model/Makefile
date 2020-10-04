@@ -33,6 +33,11 @@ test-model:
 	PYTHONPATH=.. python ../price_prediction_model/utils/generate_test_dataset.py	
 	PYTHONPATH=. python -m pytest -v tests 
 
+package:
+	pip install twine
+	python setup.py sdist
+	twine upload --skip-existing dist/*
+
 #################################################################################
 # Self Documenting Commands                                                     #
 #################################################################################

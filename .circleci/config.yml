@@ -4,7 +4,7 @@ orbs:
   python: circleci/python@0.2.1
 
 jobs:
-  test_model_py37:
+  test_and_publish_model_py37:
     docker:
       - image: circleci/python:3.7.6
     working_directory: ~/project/price_prediction_model
@@ -29,6 +29,15 @@ jobs:
       - run:
           name: Run model test
           command: make test-model
+      - run:
+          name: init .pypirc
+          command: |
+            echo -e "[pypi]" >> ~/.pypirc
+            echo -e "username = $PYPI_USERNAME" >> ~/.pypirc
+            echo -e "password = $PYPI_PASSWORD" >> ~/.pypirc
+      - run:
+          name: create and upload packages
+          command: make package
 
   test_ml_api_py37:
     docker:
