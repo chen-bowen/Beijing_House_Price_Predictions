@@ -1,0 +1,9 @@
+notebooks/*
+*/env*
+*/venv*
+.circleci*
+price_prediction_model
+*.env
+*.log
+.git
+.gitignore
