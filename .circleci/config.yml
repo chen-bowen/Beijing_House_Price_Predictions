@@ -58,26 +58,27 @@ jobs:
       - run:
           name: Run API tests with Python 3.7
           command: make test-api
-    build_and_push_to_heroku_docker:
-      docker:
-        - image: circleci/python:3.7.6
-      steps:
-        - checkout
-        - setup_remote_docker:
-            docker_layer_caching: true
-        - run: docker login --username=$HEROKU_EMAIL --password=$HEROKU_API_KEY registry.heroku.com
-        - run:
-            name: Setup Heroku CLI
-            command: |
-              wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
-        - run:
-            name: Build and Push Image
-            command: |
-              make build-ml-api-heroku push-ml-api-heroku
-        - run:
-            name: Release to Heroku
-            command: |
-              heroku container:release web --app $HEROKU_APP_NAME
+
+  build_and_push_to_heroku_docker:
+    docker:
+      - image: circleci/python:3.7.6
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run: docker login --username=$HEROKU_EMAIL --password=$HEROKU_API_KEY registry.heroku.com
+      - run:
+          name: Setup Heroku CLI
+          command: |
+            wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
+      - run:
+          name: Build and Push Image
+          command: |
+            make build-ml-api-heroku push-ml-api-heroku
+      - run:
+          name: Release to Heroku
+          command: |
+            heroku container:release web --app $HEROKU_APP_NAME
 
 #   train_and_upload_regression_model:
 #     <<: *defaults
