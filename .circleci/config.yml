@@ -62,8 +62,10 @@ jobs:
   build_and_push_to_heroku_docker:
     docker:
       - image: circleci/python:3.7.6
+    working_directory: ~/project/model_api
     steps:
-      - checkout
+      - checkout:
+          path: ~/project
       - setup_remote_docker:
           docker_layer_caching: false
       - run: docker login --username=$HEROKU_EMAIL --password=$HEROKU_API_KEY registry.heroku.com
