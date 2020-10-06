@@ -26,7 +26,7 @@ test-api:
 	PYTHONPATH=. python -m pytest -v tests 
 
 build-ml-api-heroku:
-	docker build -t registry.heroku.com/$(NAME)/web:$(COMMIT_ID) .
+	docker build -t registry.heroku.com/$(NAME)/web .
 
 push-ml-api-heroku:
-	docker push registry.heroku.com/${HEROKU_APP_NAME}/web:$(COMMIT_ID)
+	docker push registry.heroku.com/${HEROKU_APP_NAME}/web:latest
