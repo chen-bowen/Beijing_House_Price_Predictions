@@ -110,10 +110,10 @@ workflows:
             - test_and_publish_model
       - differential_tests_ml_api:
           requires:
-            - test_and_publish_model_py37
+            - test_and_publish_model
       - build_and_push_to_heroku_docker:
           requires:
-            - test_ml_api_py37
+            - test_ml_api
             - differential_tests
 #   section_12_publish_docker_image_to_aws:
 #     <<: *defaults
