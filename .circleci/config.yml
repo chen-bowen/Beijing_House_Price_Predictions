@@ -100,6 +100,21 @@ jobs:
           command: |
             heroku container:release web --app $HEROKU_APP_NAME
 
+workflows:
+  version: 2
+  build-api-workflow:
+    jobs:
+      - test_and_publish_model
+      - test_ml_api:
+          requires:
+            - test_and_publish_model
+      - differential_tests_ml_api:
+          requires:
+            - test_and_publish_model_py37
+      - build_and_push_to_heroku_docker:
+          requires:
+            - test_ml_api_py37
+            - differential_tests
 #   section_12_publish_docker_image_to_aws:
 #     <<: *defaults
 #     working_directory: ~/project/packages/ml_models
@@ -144,35 +159,20 @@ jobs:
 #             chmod +x ./scripts/publish_model.sh
 #             ./scripts/publish_model.sh ./packages/neural_network_model/
 
-workflows:
-  version: 2
-  build-api-workflow:
-    jobs:
-      - test_and_publish_model
-      - test_ml_api:
-          requires:
-            - test_and_publish_model
-      - differential_tests_ml_api:
-          requires:
-            - test_and_publish_model_py37
-      - build_and_push_to_heroku_docker:
-          requires:
-            - test_ml_api_py37
-            - differential_tests
-      # - test_ml_api_py38 pending NN model update
-      # - section_9_differential_tests
-      # - train_and_upload_regression_model:
-      #     requires:
-      #       - test_regression_model_py36
-      #       - test_regression_model_py37
-      #       - test_regression_model_py38
-      #       - test_ml_api_py36
-      #       - test_ml_api_py37
-      #       - section_9_differential_tests
-      #     filters:
-      #       branches:
-      #         only:
-      #           - master
+# - test_ml_api_py38 pending NN model update
+# - section_9_differential_tests
+# - train_and_upload_regression_model:
+#     requires:
+#       - test_regression_model_py36
+#       - test_regression_model_py37
+#       - test_regression_model_py38
+#       - test_ml_api_py36
+#       - test_ml_api_py37
+#       - section_9_differential_tests
+#     filters:
+#       branches:
+#         only:
+#           - master
 # - section_12_publish_docker_image_to_aws:
 #     requires:
 #       - train_and_upload_regression_model
