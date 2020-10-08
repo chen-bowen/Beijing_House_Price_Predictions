@@ -15,6 +15,7 @@ COMMIT_ID=$(shell git rev-parse HEAD)  # REMOVED
 
 ## Install Poetry dependencies
 poetry-install:
+	poetry lock
 	poetry config virtualenvs.create false \
 		&& poetry export --without-hashes -f requirements.txt --dev\
 		|  pip install -r /dev/stdin  --use-feature=2020-resolver\

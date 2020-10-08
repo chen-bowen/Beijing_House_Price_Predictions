@@ -1,4 +1,4 @@
-.PHONY: create_environment git
+k.PHONY: create_environment git
 
 #################################################################################
 # GLOBALS                                                                       #
@@ -18,10 +18,15 @@ fetch-dataset:
 
 ## Install Poetry dependencies
 poetry-install:
+	poetry lock
 	poetry config virtualenvs.create false \
 		&& poetry export --without-hashes -f requirements.txt --dev\
 		|  pip install -r /dev/stdin \
 		&& poetry debug
+
+build-setup:
+	pip install dephell
+	dephell deps convert
 
 # train model
 train:
