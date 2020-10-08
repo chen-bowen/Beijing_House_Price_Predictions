@@ -5,7 +5,7 @@ import os
 from werkzeug.utils import secure_filename
 
 from api.config import get_logger, UPLOAD_FOLDER
-from api.validation import validate_inputs, allowed_file
+from api.validation import validate_inputs
 from api import __version__ as api_version
 
 _logger = get_logger(logger_name=__name__)
@@ -42,9 +42,7 @@ def predict():
         _logger.debug(f"Inputs: {json_data}")
 
         # Step 2: Validate the input using marshmallow schema
-        # input_data, errors = validate_inputs(input_data=json_data)
-        input_data = json_data
-        errors = []
+        input_data, errors = validate_inputs(input_data=json_data)
 
         # Step 3: Model prediction
         response = make_prediction(input_data=input_data)

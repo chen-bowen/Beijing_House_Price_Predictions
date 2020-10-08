@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 export IS_DEBUG=${DEBUG:-false}
 if [[ -z "${PORT}" ]]; then
     PORT=5000

@@ -2,6 +2,7 @@ from sklearn.base import BaseEstimator
 from itertools import islice
 import logging
 import pandas as pd
+from collections import OrderedDict
 
 _logger = logging.getLogger(__name__)
 
@@ -17,6 +18,12 @@ class ExponentialWeightedAvgPrice(BaseEstimator):
         self.prices = prices
         self.areas = areas
 
+    def get_average_price(self, year, month):
+        """ Get the moving average price from the calculated price map """
+        if (year, month) not in self.avg_price_map.keys():
+            return self.avg_price_map[list(self.avg_price_map.keys())[-1]]
+        return self.avg_price_map[(year, month)]
+
     def fit(self, X, y=None):
         """ fit to get the average prices of a given month, year"""
         # calculate the EWMA price
@@ -29,7 +36,9 @@ class ExponentialWeightedAvgPrice(BaseEstimator):
         X.drop("totalPrice", axis=1, inplace=True)
 
         # convert and save the
-        self.avg_price_map = average_prices.ewm(span=3).mean().to_dict()["totalPrice"]
+        self.avg_price_map = OrderedDict(
+            average_prices.ewm(span=3).mean().to_dict()["totalPrice"]
+        )
 
         _logger.info(
             f"""
@@ -45,7 +54,7 @@ class ExponentialWeightedAvgPrice(BaseEstimator):
 
         # create 3 month average price
         X["expAvgPrice3mon"] = X.apply(
-            lambda row: self.avg_price_map[(row[self.year], row[self.month])], axis=1
+            lambda row: self.get_average_price(row[self.year], row[self.month]), axis=1
         )
 
         # after log

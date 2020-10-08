@@ -4,7 +4,7 @@ orbs:
   python: circleci/python@0.2.1
 
 jobs:
-  test_and_publish_model_py37:
+  test_and_publish_model:
     docker:
       - image: circleci/python:3.7.6
     working_directory: ~/project/price_prediction_model
@@ -39,7 +39,7 @@ jobs:
           name: create and upload packages
           command: make package
 
-  test_ml_api_py37:
+  test_ml_api:
     docker:
       - image: circleci/python:3.7.6
     working_directory: ~/project/model_api
@@ -58,6 +58,24 @@ jobs:
       - run:
           name: Run API tests with Python 3.7
           command: make test-api
+
+  differential_tests_ml_api:
+    docker:
+      - image: circleci/python:3.7.6
+    working_directory: ~/project/model_api
+    steps:
+      - checkout:
+          path: ~/project
+      - run:
+          name: Capturing previous model predictions
+          command: |
+            pip install -r model_api/diff_test_requirements.txt
+            PYTHONPATH=./model_api python3 model_api/tests/capture_model_predictions.py
+      - run:
+          name: Running differential tests
+          command: |
+            make poetry-install
+            py.test -vv model_api/tests -m differential
 
   build_and_push_to_heroku_docker:
     docker:
@@ -81,56 +99,6 @@ jobs:
           name: Release to Heroku
           command: |
             heroku container:release web --app $HEROKU_APP_NAME
-
-#   train_and_upload_regression_model:
-#     <<: *defaults
-#     steps:
-#       - checkout
-#       - *prepare_venv
-#       - run:
-#           name: Install requirements
-#           command: |
-#             . venv/bin/activate
-#             pip install -r packages/regression_model/requirements.txt
-#       - *fetch_data
-#       - run:
-#           name: Train model
-#           command: |
-#             . venv/bin/activate
-#             PYTHONPATH=./packages/regression_model python3 packages/regression_model/regression_model/train_pipeline.py
-#       - run:
-#           name: Publish model to Gemfury
-#           command: |
-#             . venv/bin/activate
-#             chmod +x ./scripts/publish_model.sh
-#             ./scripts/publish_model.sh ./packages/regression_model/
-
-#   section_9_differential_tests:
-#     <<: *defaults
-#     steps:
-#       - checkout
-#       - *prepare_venv
-#       - run:
-#           name: Capturing previous model predictions
-#           command: |
-#             . venv/bin/activate
-#             pip install -r packages/ml_api/diff_test_requirements.txt
-#             PYTHONPATH=./packages/ml_api python3 packages/ml_api/tests/capture_model_predictions.py
-#       - run:
-#           name: Runnning differential tests
-#           command: |
-#             . venv/bin/activate
-#             pip install -r packages/ml_api/requirements.txt
-#             py.test -vv packages/ml_api/tests -m differential
-
-#   section_10_deploy_to_heroku:
-#     <<: *defaults
-#     steps:
-#       - checkout
-#       - run:
-#           name: Deploy to Heroku
-#           command: |
-#             git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
 
 #   section_12_publish_docker_image_to_aws:
 #     <<: *defaults
@@ -178,15 +146,19 @@ jobs:
 
 workflows:
   version: 2
-  test-all:
+  build-api-workflow:
     jobs:
-      - test_and_publish_model_py37
-      - test_ml_api_py37:
+      - test_and_publish_model
+      - test_ml_api:
+          requires:
+            - test_and_publish_model
+      - differential_tests_ml_api:
           requires:
             - test_and_publish_model_py37
       - build_and_push_to_heroku_docker:
           requires:
             - test_ml_api_py37
+            - differential_tests
       # - test_ml_api_py38 pending NN model update
       # - section_9_differential_tests
       # - train_and_upload_regression_model:
@@ -201,20 +173,6 @@ workflows:
       #       branches:
       #         only:
       #           - master
-# - section_10_deploy_to_heroku:
-#     requires:
-#       - train_and_upload_regression_model
-#     filters:
-#       branches:
-#         only:
-#           - master
-#      - section_11_build_and_push_to_heroku_docker:
-#          requires:
-#            - train_and_upload_regression_model
-#          filters:
-#            branches:
-#              only:
-#                - master
 # - section_12_publish_docker_image_to_aws:
 #     requires:
 #       - train_and_upload_regression_model

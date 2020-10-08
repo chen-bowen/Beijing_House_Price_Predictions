@@ -23,9 +23,10 @@ poetry-install:
 ## test model api
 test-api:
 	pip install pytest
-	PYTHONPATH=. python -m pytest -v tests 
+	PYTHONPATH=. python -m pytest -v -m "not differential" tests
 
 build-ml-api-heroku:
+	poetry export -f requirements.txt -o requirements.txt
 	docker build -t registry.heroku.com/$(NAME)/web .
 
 push-ml-api-heroku:

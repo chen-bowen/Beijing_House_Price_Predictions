@@ -6,8 +6,8 @@ differential test versioning logic.
 
 import pandas as pd
 
-from regression_model.predict import make_prediction
-from regression_model.processing.data_management import load_dataset
+from price_prediction_model.model.predict import make_prediction
+from price_prediction_model.utils.utils import load_dataset
 
 from api import config
 
@@ -15,8 +15,8 @@ from api import config
 def capture_predictions() -> None:
     """Save the test data predictions to a CSV."""
 
-    save_file = 'test_data_predictions.csv'
-    test_data = load_dataset(file_name='test.csv')
+    save_file = "test_data_predictions.csv"
+    test_data = load_dataset(file_name="beijing_house_price_test_data.csv")
 
     # we take a slice with no input validation issues
     multiple_test_input = test_data[99:600]
@@ -28,8 +28,8 @@ def capture_predictions() -> None:
 
     # hack here to save the file to the regression model
     # package of the repo, not the installed package
-    predictions_df.to_csv(f'{config.PACKAGE_ROOT}/{save_file}')
+    predictions_df.to_csv(f"{config.PACKAGE_ROOT}/{save_file}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     capture_predictions()
