@@ -67,6 +67,9 @@ jobs:
       - checkout:
           path: ~/project
       - run:
+          name: Install pip
+          command: pip install --upgrade pip
+      - run:
           name: Capturing previous model predictions
           command: |
             pip install -r diff_test_requirements.txt
