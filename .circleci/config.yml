@@ -69,13 +69,13 @@ jobs:
       - run:
           name: Capturing previous model predictions
           command: |
-            pip install -r model_api/diff_test_requirements.txt
-            PYTHONPATH=./model_api python3 model_api/tests/capture_model_predictions.py
+            pip install -r diff_test_requirements.txt
+            PYTHONPATH=. python3 tests/capture_model_predictions.py
       - run:
           name: Running differential tests
           command: |
             make poetry-install
-            py.test -vv model_api/tests -m differential
+            py.test -vv tests -m differential
 
   build_and_push_to_heroku_docker:
     docker:

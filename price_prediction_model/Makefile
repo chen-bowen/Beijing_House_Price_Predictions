@@ -34,6 +34,7 @@ test-model:
 	PYTHONPATH=. python -m pytest -v tests 
 
 package:
+	dephell deps convert
 	pip install twine
 	python setup.py sdist
 	twine upload --skip-existing dist/*
