@@ -32,3 +32,15 @@ build-ml-api-heroku:
 
 push-ml-api-heroku:
 	docker push registry.heroku.com/${HEROKU_APP_NAME}/web:latest
+
+aws-login:
+	aws ecr get-login-password | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com
+
+build-ml-api-aws:
+	docker build -t $(NAME):$(COMMIT_ID) .
+
+push-ml-api-aws:
+	docker push ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/$(NAME):$(COMMIT_ID)
+
+tag-ml-api:
+	docker tag $(NAME):$(COMMIT_ID) ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/$(NAME):$(COMMIT_ID)
