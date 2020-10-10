@@ -116,7 +116,7 @@ jobs:
           command: |
             sudo pip install awscli
             make aws-login build-ml-api-aws tag-ml-api push-ml-api-aws
-            aws ecs update-service --cluster ml-api-cluster --service custom-service --task-definition  first-run-task-definition --force-new-deployment
+            aws ecs update-service --cluster ml-api-cluster --service custom-service --task-definition  house-pricing-api-task-definition --force-new-deployment
 
 workflows:
   version: 2
