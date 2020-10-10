@@ -6,6 +6,7 @@ PROJECT_NAME = price_prediction_model_api
 CONDA_ENVIRONMENT = price_prediction_model_api
 PYTHON_VERSION = Python interpreter (e.g. 3, 3.5, 2.7)
 NAME=house-pricing-api
+AWS_REPO_NAME=house-pricing-model-api
 HEROKU_APP_NAME=house-pricing-api
 COMMIT_ID=$(shell git rev-parse HEAD)  # REMOVED
 
@@ -37,10 +38,10 @@ aws-login:
 	aws ecr get-login-password | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com
 
 build-ml-api-aws:
-	docker build -t $(NAME):$(COMMIT_ID) .
+	docker build -t $(AWS_REPO_NAME):$(COMMIT_ID) .
 
 push-ml-api-aws:
-	docker push ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/$(NAME):$(COMMIT_ID)
+	docker push ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/$(AWS_REPO_NAME):$(COMMIT_ID)
 
 tag-ml-api:
-	docker tag $(NAME):$(COMMIT_ID) ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/$(NAME):$(COMMIT_ID)
+	docker tag $(AWS_REPO_NAME):$(COMMIT_ID) ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/$(AWS_REPO_NAME):$(COMMIT_ID)
