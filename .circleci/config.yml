@@ -112,11 +112,20 @@ jobs:
           path: ~/project
       - setup_remote_docker
       - run:
-          name: Publishing docker image to aws ECR
+          name: Log in to AWS
           command: |
             sudo pip install awscli
-            make aws-login build-ml-api-aws tag-ml-api push-ml-api-aws
-            aws ecs update-service --cluster ml-api-cluster --service custom-service --task-definition  house-pricing-api-task-definition --force-new-deployment
+            make aws-login
+      - run:
+          name: Build, tag and model API image to model registry
+          command: |
+            make build-ml-api-aws 
+            make tag-ml-api 
+            make push-ml-api-aws
+      - run:
+          name: Update existing service
+          command: |
+            make update-ec2-service
 
 workflows:
   version: 2
