@@ -103,20 +103,20 @@ jobs:
           command: |
             heroku container:release web --app $HEROKU_APP_NAME
 
-    publish_docker_image_to_aws:
-      docker:
-        - image: circleci/python:3.7.6
-      working_directory: ~/project/model_api
-      steps:
-        - checkout:
+  publish_docker_image_to_aws:
+    docker:
+      - image: circleci/python:3.7.6
+    working_directory: ~/project/model_api
+    steps:
+      - checkout:
           path: ~/project
-        - setup_remote_docker
-        - run:
-            name: Publishing docker image to aws ECR
-            command: |
-              sudo pip install awscli
-              make aws-login build-ml-api-aws tag-ml-api push-ml-api-aws
-              aws ecs update-service --cluster ml-api-cluster --service custom-service --task-definition  first-run-task-definition --force-new-deployment
+      - setup_remote_docker
+      - run:
+          name: Publishing docker image to aws ECR
+          command: |
+            sudo pip install awscli
+            make aws-login build-ml-api-aws tag-ml-api push-ml-api-aws
+            aws ecs update-service --cluster ml-api-cluster --service custom-service --task-definition  first-run-task-definition --force-new-deployment
 
 workflows:
   version: 2
