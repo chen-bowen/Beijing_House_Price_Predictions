@@ -10,6 +10,7 @@ AWS_REPO_NAME=house-pricing-model-api
 HEROKU_APP_NAME=house-pricing-api
 COMMIT_ID=$(shell git rev-parse HEAD)  # REMOVED
 CLUSTER_NAME=house-pricing-api-cluster
+SERVICE_NAME=house-pricing-api-service
 TASK_DEFINITION_NAME=house-pricing-api-task-definition
 
 #################################################################################
@@ -49,4 +50,4 @@ tag-ml-api:
 	docker tag $(AWS_REPO_NAME):$(COMMIT_ID) ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/$(AWS_REPO_NAME):$(COMMIT_ID)
 
 update-ec2-service:
-	aws ecs update-service --cluster $(CLUSTER_NAME) --service custom-service --task-definition ${TASK_DEFINITION_NAME} --force-new-deployment
+	aws ecs update-service --cluster ${CLUSTER_NAME} --service ${SERVICE_NAME} --task-definition  ${TASK_DEFINITION_NAME} --force-new-deployment
