@@ -103,6 +103,30 @@ jobs:
           command: |
             heroku container:release web --app $HEROKU_APP_NAME
 
+  publish_docker_image_to_aws:
+    docker:
+      - image: circleci/python:3.7.6
+    working_directory: ~/project/model_api
+    steps:
+      - checkout:
+          path: ~/project
+      - setup_remote_docker
+      - run:
+          name: Log in to AWS
+          command: |
+            sudo pip install awscli
+            make aws-login
+      - run:
+          name: Build, tag and model API image to model registry
+          command: |
+            make build-ml-api-aws 
+            make tag-ml-api 
+            make push-ml-api-aws
+      - run:
+          name: Update existing service
+          command: |
+            make update-ec2-service
+
 workflows:
   version: 2
   build-api-workflow:
@@ -118,20 +142,18 @@ workflows:
           requires:
             - test_ml_api
             - differential_tests_ml_api
-#   section_12_publish_docker_image_to_aws:
-#     <<: *defaults
-#     working_directory: ~/project/packages/ml_models
-#     steps:
-#       - checkout
-#       - setup_remote_docker
-#       - run:
-#           name: Publishing docker image to aws ECR
-#           command: |
-#             sudo pip install awscli
-#             eval $(aws ecr get-login --no-include-email --region us-east-1)
-#             make build-ml-api-aws tag-ml-api push-ml-api-aws
-#             aws ecs update-service --cluster ml-api-cluster --service custom-service --task-definition  first-run-task-definition --force-new-deployment
-
+          filters:
+            branches:
+              only:
+                - master
+      - publish_docker_image_to_aws:
+          requires:
+            - test_ml_api
+            - differential_tests_ml_api
+          filters:
+            branches:
+              only:
+                - aws_build
 #   section_13_train_and_upload_neural_network_model:
 #     docker:
 #       - image: circleci/python:3.6.4-stretch
@@ -162,34 +184,8 @@ workflows:
 #             chmod +x ./scripts/publish_model.sh
 #             ./scripts/publish_model.sh ./packages/neural_network_model/
 
-# - test_ml_api_py38 pending NN model update
-# - section_9_differential_tests
-# - train_and_upload_regression_model:
-#     requires:
-#       - test_regression_model_py36
-#       - test_regression_model_py37
-#       - test_regression_model_py38
-#       - test_ml_api_py36
-#       - test_ml_api_py37
-#       - section_9_differential_tests
-#     filters:
-#       branches:
-#         only:
-#           - master
-# - section_12_publish_docker_image_to_aws:
-#     requires:
-#       - train_and_upload_regression_model
-#     filters:
-#       branches:
-#         only:
-#           - master
-#      - section_13_train_and_upload_neural_network_model:
-#          requires:
-#            - test_regression_model
-#            - test_ml_api
-#            - section_9_differential_tests
-# - train_and_upload_regression_model
-# filters:
-#   branches:
-#     only:
-#       - master
+#  - section_13_train_and_upload_neural_network_model:
+#      requires:
+#        - test_regression_model
+#        - test_ml_api
+#        - section_9_differential_tests
